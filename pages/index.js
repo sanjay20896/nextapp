@@ -39,7 +39,7 @@ export default function Home() {
    
 
 
-      <h1>Simple Blog App</h1>
+      <h1>Simpl Blog App</h1>
       
       <div className="row container">
         {posts.map(post => {
