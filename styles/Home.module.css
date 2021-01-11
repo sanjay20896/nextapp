@@ -1,6 +1,6 @@
 .container {
   min-height: 100vh;
-  padding: 0 0.5rem;
+  padding: 1rem 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -112,6 +112,11 @@
 
 .logo {
   height: 1em;
+}
+.blogTitle{
+    width: 100%;
+    display: flex;
+    
 }
 
 @media (max-width: 600px) {
