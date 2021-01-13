@@ -2,9 +2,9 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Blog from '../components/blog'
 import React from 'react'
-
+import Paginate from '../components/pagination';
 import imageUrlBuilder from '@sanity/image-url'
-
+import {ITEMS_PER_PAGE} from '../config' 
 //sanity api client
 const sanityClient = require('@sanity/client')
 const client = sanityClient({
@@ -21,11 +21,20 @@ const imgUrl = (source) => {
 
 
 export async function getServerSideProps(context) {
+  
   const query = `*[_type == "post"]{author->{name},title,desc,"mainImageUrl":mainImage.asset->url,_id,slug}`
   let posts = (await client.fetch(query));
-
+  let totalPosts = posts.length;
+  let totalPages = Math.ceil(totalPosts/ITEMS_PER_PAGE)
+  let pageNo = 1;
+  if (!isNaN(parseInt(context.query.page)) && parseInt(context.query.page) >= 1 && parseInt(context.query.page) <= totalPages) {
+    pageNo = parseInt(context.query.page)
+  }
+  posts = posts.splice(((pageNo - 1) * ITEMS_PER_PAGE), pageNo * 2);
+  //console.log(posts.length);
+  console.log(posts);
   return {
-    props: {posts}, // will be passed to the page component as props
+    props: {posts,totalPages,pageNo}, // will be passed to the page component as props
   }
 }
 
@@ -54,11 +63,16 @@ export default function Home(props) {
                 img={ post.mainImageUrl }
                 slug={post.slug}
               />
+             
+
             </div>
           )
         })}
       </div>
-     
+      <Paginate
+        pageNo={ props.pageNo }
+        totalPages={ props.totalPages }
+      />
   
       <footer className={styles.footer}>
         <a

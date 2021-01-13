@@ -4,6 +4,7 @@ import styles from '../../styles/Home.module.css'
 import SingleBlog from '../../components/singleBlog'
 import React from 'react'
 import sanityClient from '@sanity/client'
+
 const client = sanityClient({
   projectId: '9muhrmr0',
   dataset: 'production',
